@@ -7,6 +7,7 @@
 #include <gmpxx.h>
 #include <string.h>
 #include <sstream>
+#include <fstream>
 
 using namespace std;
 using namespace NTL;

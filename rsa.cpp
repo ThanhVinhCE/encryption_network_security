@@ -6,6 +6,7 @@ ZZ stringToNumber(string str)
 {
   ZZ number = conv<ZZ>(str[0]);
   long len = str.length();
+  cout << len << endl;
   for(long i = 1; i < len; i++)
   {
       number *= 128;
@@ -123,6 +124,23 @@ void cryptRSA (char* fileMText,char* fileKey,char *fileCrypt)
     //get M
     filetext >> TEXT;
 
+    string subText;
+    size_t pos = 0;
+    size_t Text_len = TEXT.length();
+
+    while(Text_len > 100){
+        subText = TEXT.substr(pos, 100);
+
+        M = stringToNumber(subText);
+        C = PowerModula(M, e, n);
+        filecrypt << C << endl;
+
+        pos+=100;
+        Text_len -= 100;
+        if(Text_len <= 100)
+            TEXT = TEXT.substr(pos, Text_len);
+    }
+
     M = stringToNumber(TEXT);
 
     C = PowerModula(M, e, n);
@@ -132,6 +150,7 @@ void cryptRSA (char* fileMText,char* fileKey,char *fileCrypt)
     filecrypt.close();
     filetext.close();
     filekey.close();
+    //cout << "end encrypt" << endl;
 }
 
 void decryptRSA (char* fileEncrypt,char* fileKey,char *fileDecrypt)
@@ -150,10 +169,7 @@ void decryptRSA (char* fileEncrypt,char* fileKey,char *fileDecrypt)
 
     ZZ n, d, C, M;
     string text;
-
-    // get C
-    fileEnc >> text;
-    C = conv<ZZ>(text.c_str());
+    string final_str_dec = "";
 
     // get n
     PK >> text;
@@ -163,12 +179,20 @@ void decryptRSA (char* fileEncrypt,char* fileKey,char *fileDecrypt)
     PK >> text;
     d = conv<ZZ>(text.c_str());
 
-    
-    M = PowerModula(C, d, n);
+    while(getline(fileEnc, text)) {
+        // get C
+        C = conv<ZZ>(text.c_str());
 
-    string ZZ_str = numberToString(M);
+        M = PowerModula(C, d, n);
 
-    decrypt << ZZ_str << endl;
+        string ZZ_str = numberToString(M);
+
+        final_str_dec = final_str_dec + ZZ_str;
+        //cout << final_str_dec << endl;
+        text = "";
+    }
+
+    decrypt << final_str_dec << endl;
 
     fileEnc.close();
     decrypt.close();
