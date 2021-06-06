@@ -6,6 +6,7 @@
 #include <gmp.h>
 #include <gmpxx.h>
 #include <string.h>
+#include <sstream>
 
 using namespace std;
 using namespace NTL;
@@ -18,4 +19,7 @@ void decryptRSA (char* fileText,char* fileKey,char *fileDecrypt);
 // string convert_base64(const string &code);
 // string de_convert_base64(const string &code);
 ZZ PowerModula(const ZZ& a, const ZZ& e, const ZZ& n);
+//string zToString(const ZZ &z);
+ZZ stringToNumber(string str);
+string numberToString(ZZ num);
 #endif
