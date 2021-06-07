@@ -20,10 +20,9 @@ string numberToString(ZZ num)
 {
     long len = ceil(log(num)/log(128));
     char str[len];
-    //cout << num << endl;
     for(long i = len-1; i >= 0; i--)
     {
-        //cout << num%16 << endl;
+        //cout << num%128 << endl;
         str[i] = conv<int>(num % 128);
         num /= 128;
     }
@@ -122,7 +121,8 @@ void cryptRSA (char* fileMText,char* fileKey,char *fileCrypt)
     e = conv<ZZ>(TEXT.c_str());
 
     //get M
-    filetext >> TEXT;
+    //filetext >> TEXT;
+    getline(filetext, TEXT);
 
     string subText;
     size_t pos = 0;
@@ -150,7 +150,6 @@ void cryptRSA (char* fileMText,char* fileKey,char *fileCrypt)
     filecrypt.close();
     filetext.close();
     filekey.close();
-    //cout << "end encrypt" << endl;
 }
 
 void decryptRSA (char* fileEncrypt,char* fileKey,char *fileDecrypt)
